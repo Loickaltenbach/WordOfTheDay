@@ -8,7 +8,7 @@ private let mmkvID = "word-of-the-day" // must match the `id` used in src/storag
 // ponytail: MMKV(App Group) init sequence copied from Tencent's documented
 // extension pattern, not yet compiled — verify against the current MMKV pod
 // docs once this target exists (github.com/Tencent/MMKV/wiki/ios_advance).
-private func loadSnapshot() -> [String] {
+private func loadSnapshot() -> [WordEntry] {
     guard let groupDir = FileManager.default
         .containerURL(forSecurityApplicationGroupIdentifier: appGroupID)?.path
     else { return [] }
@@ -17,28 +17,28 @@ private func loadSnapshot() -> [String] {
     guard let kv = MMKV(mmapID: mmkvID, mode: .multiProcess),
           let json = kv.string(forKey: "snapshot"),
           let data = json.data(using: .utf8),
-          let words = try? JSONDecoder().decode([String].self, from: data)
+          let entries = try? JSONDecoder().decode([WordEntry].self, from: data)
     else { return [] }
-    return words
+    return entries
 }
 
-struct WordEntry: TimelineEntry {
+struct WidgetEntry: TimelineEntry {
     let date: Date
-    let word: String?
+    let word: WordEntry?
 }
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> WordEntry {
-        WordEntry(date: Date(), word: "mot")
+    func placeholder(in context: Context) -> WidgetEntry {
+        WidgetEntry(date: Date(), word: WordEntry(word: "mot", translation: "traduction", example: ""))
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (WordEntry) -> Void) {
-        completion(WordEntry(date: Date(), word: WordPicker.pick(from: loadSnapshot())))
+    func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> Void) {
+        completion(WidgetEntry(date: Date(), word: WordPicker.pick(from: loadSnapshot())))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<WordEntry>) -> Void) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
         let now = Date()
-        let entry = WordEntry(date: now, word: WordPicker.pick(from: loadSnapshot(), for: now))
+        let entry = WidgetEntry(date: now, word: WordPicker.pick(from: loadSnapshot(), for: now))
         let midnight = Calendar.current.nextDate(
             after: now,
             matching: DateComponents(hour: 0, minute: 0),
@@ -53,9 +53,18 @@ struct WordOfTheDayWidgetEntryView: View {
 
     var body: some View {
         if let word = entry.word {
-            Text(word)
-                .font(.title2)
-                .bold()
+            VStack(alignment: .leading, spacing: 4) {
+                Text(word.word)
+                    .font(.title2)
+                    .bold()
+                Text(word.translation)
+                    .font(.footnote)
+                if !word.example.isEmpty {
+                    Text("« \(word.example) »")
+                        .font(.caption2)
+                        .italic()
+                }
+            }
         } else {
             Text("Ajoute des mots dans l'app")
                 .font(.footnote)

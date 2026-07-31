@@ -1,7 +1,7 @@
 // Manual mock: the real package eagerly imports the native Nitro turbo module,
 // which doesn't exist under Jest. Only the handful of methods storage.ts uses
 // are implemented.
-export class MMKV {
+class MockMMKV {
   private map = new Map<string, string>();
 
   getString(key: string): string | undefined {
@@ -15,4 +15,12 @@ export class MMKV {
   clearAll(): void {
     this.map.clear();
   }
+
+  remove(key: string): boolean {
+    return this.map.delete(key);
+  }
+}
+
+export function createMMKV(): MockMMKV {
+  return new MockMMKV();
 }

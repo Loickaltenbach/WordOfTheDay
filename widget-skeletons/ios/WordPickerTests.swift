@@ -3,7 +3,7 @@ import XCTest
 
 final class WordPickerTests: XCTestCase {
     func testEmptyListReturnsNil() {
-        XCTAssertNil(WordPicker.pick(from: [], for: Date()))
+        XCTAssertNil(WordPicker.pick(from: [String](), for: Date()))
     }
 
     func testSameDateSameListIsStable() {

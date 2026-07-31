@@ -16,15 +16,31 @@ class WordOfTheDayWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
         MMKV.initialize(context)
         val kv = MMKV.mmkvWithID(MMKV_ID)
-        val words = kv?.decodeString("snapshot")?.let { json ->
+        val entries = kv?.decodeString("snapshot")?.let { json ->
             val array = JSONArray(json)
-            (0 until array.length()).map { array.getString(it) }
+            (0 until array.length()).map {
+                val obj = array.getJSONObject(it)
+                WordEntry(
+                    word = obj.getString("word"),
+                    translation = obj.getString("translation"),
+                    example = obj.getString("example"),
+                )
+            }
         } ?: emptyList()
 
-        val word = WordPicker.pick(words) ?: context.getString(R.string.word_of_the_day_empty)
+        val entry = WordPicker.pick(entries)
         for (id in ids) {
             val views = RemoteViews(context.packageName, R.layout.word_of_the_day_widget)
-            views.setTextViewText(R.id.word_text, word)
+            if (entry != null) {
+                views.setTextViewText(R.id.word_text, entry.word)
+                views.setTextViewText(R.id.translation_text, entry.translation)
+                views.setViewVisibility(R.id.example_text, android.view.View.VISIBLE)
+                views.setTextViewText(R.id.example_text, "« ${entry.example} »")
+            } else {
+                views.setTextViewText(R.id.word_text, context.getString(R.string.word_of_the_day_empty))
+                views.setTextViewText(R.id.translation_text, "")
+                views.setViewVisibility(R.id.example_text, android.view.View.GONE)
+            }
             manager.updateAppWidget(id, views)
         }
     }
