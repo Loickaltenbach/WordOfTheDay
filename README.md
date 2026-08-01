@@ -1,97 +1,104 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Word of the Day
 
-# Getting Started
+A React Native vocabulary app with an iOS Lock Screen widget. You keep a lexicon
+per language, and the widget shows one word from it each day — the same word all
+day, a new one at midnight.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+The word list lives in MMKV inside a shared App Group container, so the widget
+extension reads it directly. No server, no account, no network.
 
-## Step 1: Start Metro
+## Features
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- Per-language lexicons (Français, Anglais, Japonais), seeded with 1010 words each
+  on first pick — the list is never empty on day one
+- Add, edit, delete words with a translation and an optional example sentence
+- Mark words as learned, search within a lexicon
+- iOS Lock Screen widget (`accessoryRectangular`), refreshed at local midnight
+- Case-insensitive duplicate detection
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Stack
 
-```sh
-# Using npm
-npm start
+React Native 0.86 · React 19 · TypeScript · MMKV (`react-native-mmkv` v4 / Nitro)
+· WidgetKit + SwiftUI. Node >= 22.11.
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## Running it
 
 ```sh
-bundle install
+npm install
+bundle install                        # CocoaPods itself (Gemfile at the repo root)
+cd ios && bundle exec pod install && cd ..
+
+npm start           # Metro
+npm run ios         # or: npm run android
 ```
 
-Then, and every time you update your native dependencies, run:
+Tests and lint:
 
 ```sh
-bundle exec pod install
+npm test
+npm run lint
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## The iOS widget
 
-```sh
-# Using npm
-npm run ios
+The widget is a separate target, `WordOfTheDayWidgetExtension`. It shares data with
+the app through an App Group — which means three things have to line up, and all
+three fail silently when they don't:
 
-# OR using Yarn
-yarn ios
+1. **Both targets need the App Group entitlement.** See
+   [`ios/WordOfTheDay/WordOfTheDay.entitlements`](ios/WordOfTheDay/WordOfTheDay.entitlements)
+   and
+   [`ios/WordOfTheDayWidget/WordOfTheDayWidget.entitlements`](ios/WordOfTheDayWidget/WordOfTheDayWidget.entitlements).
+   Without it on the extension, `containerURL(forSecurityApplicationGroupIdentifier:)`
+   returns `nil` and the widget just renders its empty state.
+
+2. **`AppGroupIdentifier` must be set in the app's `Info.plist`.** That is the key
+   `react-native-mmkv` reads to decide where to put the MMKV file. Without it, the
+   app writes to its own container instead of the shared one.
+
+3. **The MMKV root path must match on both sides.** `react-native-mmkv` writes to
+   the App Group container root, so the widget passes `rootPath: groupDir`
+   explicitly — *not* `MMKV.initialize(rootDir:groupDir:)`, which appends `/mmkv`
+   and would open a different file. See
+   [`WordOfTheDayWidget.swift`](ios/WordOfTheDayWidget/WordOfTheDayWidget.swift).
+
+Forking with a different bundle identifier means updating the App Group ID in both
+entitlements files, in `Info.plist`, and in `WordOfTheDayWidget.swift`.
+
+After reinstalling, remove and re-add the widget: iOS caches the previous timeline,
+so a stale empty state can outlive the fix.
+
+## Layout
+
+```
+App.tsx                        UI (single file, French copy)
+src/storage.ts                 MMKV reads/writes + widget snapshot
+src/defaultWords.ts            seed lexicons
+src/languages.ts               language catalog
+src/theme.ts                   colors, radii
+ios/WordOfTheDayWidget/        WidgetKit extension
+widget-skeletons/              pre-integration templates (iOS + Android)
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+The widget only ever reads one key, `snapshot`: the active language's words
+flattened to `{word, translation, example}`. Every mutation in `storage.ts`
+rewrites it. The `learned` flag stays app-only.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Word selection is deterministic — the same calendar day plus the same list yields
+the same word, with no stored state, so the app and the widget agree without
+coordinating. See [`WordPicker.swift`](ios/WordOfTheDayWidget/WordPicker.swift).
 
-## Step 3: Modify your app
+## Known gaps
 
-Now that you have successfully run the app, let's make changes!
+- The Android widget exists only as a skeleton in
+  [`widget-skeletons/android/`](widget-skeletons/android/); it is not wired into the
+  Gradle build.
+- No `WidgetCenter.reloadAllTimelines()` bridge — words added in the app show up on
+  the widget at the next system refresh, not immediately.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## License
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+MIT — see [LICENSE](LICENSE).
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+The bundled word lists are derived from third-party MIT-licensed datasets; see
+[NOTICE.md](NOTICE.md) for attribution.
