@@ -1,8 +1,3 @@
-// Color/radius tokens copied from the Claude Design project's styles.css
-// (design-system "classical"). Fonts (Cormorant Garamond / Lora) are skipped —
-// bundling custom fonts means linking .ttf files into both native projects,
-// disproportionate for this still-unshipped scaffolding screen. Using the
-// system font instead; ask if pixel-accurate typography matters later.
 export const colors = {
   bg: '#f3f2f2',
   text: '#201f1d',
