@@ -32,6 +32,16 @@ npm start           # Metro
 npm run ios         # or: npm run android
 ```
 
+That is enough for the simulator. To sign for a physical device, drop your Apple
+Team ID into a gitignored local override — no project file edits, nothing to undo
+before committing:
+
+```sh
+echo 'DEVELOPMENT_TEAM = ABCDE12345' > ios/Signing.local.xcconfig
+```
+
+See [`ios/Signing.xcconfig`](ios/Signing.xcconfig) for why it works that way.
+
 Tests and lint:
 
 ```sh

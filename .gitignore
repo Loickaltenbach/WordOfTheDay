@@ -22,6 +22,9 @@ DerivedData
 *.xcuserstate
 **/.xcode.env.local
 
+# Local signing overrides (Apple Team ID) — see ios/Signing.xcconfig
+**/Signing.local.xcconfig
+
 # Android/IntelliJ
 #
 build/

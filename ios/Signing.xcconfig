@@ -1,0 +1,18 @@
+// Signing settings, kept out of the committed project file.
+//
+// This file is versioned and intentionally empty: an unset DEVELOPMENT_TEAM lets
+// a fresh clone open and build for the simulator without touching anything.
+// To sign for a device, create `Signing.local.xcconfig` next to this file (it is
+// gitignored) with your own team:
+//
+//     DEVELOPMENT_TEAM = ABCDE12345
+//
+// Same convention as the `.xcode.env` / `.xcode.env.local` pair above.
+//
+// Applied at the *project* level, because CocoaPods owns the per-target
+// baseConfigurationReference slots — so `pod install` never overwrites this.
+
+DEVELOPMENT_TEAM =
+
+// `#include?` is the optional form: no error when the file is absent.
+#include? "Signing.local.xcconfig"
