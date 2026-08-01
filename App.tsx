@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import {
   Alert,
   FlatList,
@@ -360,6 +361,24 @@ function EmptyState({
   );
 }
 
+function Sheet({
+  visible,
+  onClose,
+  children,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
+      <View style={styles.modalBackdrop}>
+        <View style={styles.sheet}>{children}</View>
+      </View>
+    </Modal>
+  );
+}
+
 function LanguagePicker({
   visible,
   search,
@@ -381,42 +400,38 @@ function LanguagePicker({
   );
 
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.modalBackdrop}>
-        <View style={styles.sheet}>
-          <View style={styles.sheetHeader}>
-            <Text style={styles.kicker}>Ajouter une langue</Text>
-            <Pressable onPress={onClose}>
-              <Text style={styles.closeText}>Fermer</Text>
-            </Pressable>
-          </View>
-          <TextInput
-            style={styles.searchInput}
-            value={search}
-            onChangeText={onChangeSearch}
-            placeholder="Rechercher une langue"
-            placeholderTextColor={colors.neutral500}
-          />
-          <ScrollView style={{ marginTop: 12 }}>
-            {results.map(language => {
-              const added = alreadyAdded.includes(language);
-              return (
-                <Pressable
-                  key={language}
-                  disabled={added}
-                  onPress={() => onPick(language)}
-                  style={[styles.pickerRow, added && styles.pickerRowDisabled]}>
-                  <Text style={styles.pickerRowText}>{language}</Text>
-                  <Text style={styles.pickerRowMeta}>
-                    {added ? 'Déjà ajoutée' : '+'}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-        </View>
+    <Sheet visible={visible} onClose={onClose}>
+      <View style={styles.sheetHeader}>
+        <Text style={styles.kicker}>Ajouter une langue</Text>
+        <Pressable onPress={onClose}>
+          <Text style={styles.closeText}>Fermer</Text>
+        </Pressable>
       </View>
-    </Modal>
+      <TextInput
+        style={styles.searchInput}
+        value={search}
+        onChangeText={onChangeSearch}
+        placeholder="Rechercher une langue"
+        placeholderTextColor={colors.neutral500}
+      />
+      <ScrollView style={{ marginTop: 12 }}>
+        {results.map(language => {
+          const added = alreadyAdded.includes(language);
+          return (
+            <Pressable
+              key={language}
+              disabled={added}
+              onPress={() => onPick(language)}
+              style={[styles.pickerRow, added && styles.pickerRowDisabled]}>
+              <Text style={styles.pickerRowText}>{language}</Text>
+              <Text style={styles.pickerRowMeta}>
+                {added ? 'Déjà ajoutée' : '+'}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+    </Sheet>
   );
 }
 
@@ -435,10 +450,11 @@ function WordFormModal({
   const [translation, setTranslation] = useState(editing?.translation ?? '');
   const [example, setExample] = useState(editing?.example ?? '');
   const [duplicate, setDuplicate] = useState(false);
+  const invalid = !word.trim() || !translation.trim();
 
   const save = () => {
+    if (invalid) return;
     const entry = { word: word.trim(), translation: translation.trim(), example: example.trim() };
-    if (!entry.word || !entry.translation) return;
 
     const result = editing
       ? updateWord(language, editing.word, entry)
@@ -452,71 +468,64 @@ function WordFormModal({
   };
 
   return (
-    <Modal visible animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.modalBackdrop}>
-        <View style={styles.sheet}>
-          <Text style={styles.kicker}>
-            {editing ? 'Modifier le mot' : 'Nouveau mot'} · {language}
+    <Sheet visible onClose={onClose}>
+      <Text style={styles.kicker}>
+        {editing ? 'Modifier le mot' : 'Nouveau mot'} · {language}
+      </Text>
+
+      <View style={styles.field}>
+        <Text style={styles.fieldLabel}>Mot</Text>
+        <TextInput
+          style={[styles.fieldInput, duplicate && styles.fieldInputError]}
+          value={word}
+          onChangeText={text => {
+            setWord(text);
+            setDuplicate(false);
+          }}
+          placeholder="ex: brittle"
+          placeholderTextColor={colors.neutral500}
+        />
+        {duplicate && (
+          <Text style={styles.fieldError}>
+            « {word} » figure déjà dans votre liste {language.toLowerCase()}.
           </Text>
-
-          <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Mot</Text>
-            <TextInput
-              style={[styles.fieldInput, duplicate && styles.fieldInputError]}
-              value={word}
-              onChangeText={text => {
-                setWord(text);
-                setDuplicate(false);
-              }}
-              placeholder="ex: brittle"
-              placeholderTextColor={colors.neutral500}
-            />
-            {duplicate && (
-              <Text style={styles.fieldError}>
-                « {word} » figure déjà dans votre liste {language.toLowerCase()}.
-              </Text>
-            )}
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Traduction</Text>
-            <TextInput
-              style={styles.fieldInput}
-              value={translation}
-              onChangeText={setTranslation}
-              placeholder="ex: cassant, fragile"
-              placeholderTextColor={colors.neutral500}
-            />
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.fieldLabel}>Exemple (optionnel)</Text>
-            <TextInput
-              style={styles.fieldInput}
-              value={example}
-              onChangeText={setExample}
-              placeholder="ex: The old paper had grown brittle."
-              placeholderTextColor={colors.neutral500}
-            />
-          </View>
-
-          <View style={styles.formActions}>
-            <Pressable style={styles.formCancel} onPress={onClose}>
-              <Text style={styles.formCancelText}>Annuler</Text>
-            </Pressable>
-            <Pressable
-              style={[
-                styles.formSave,
-                (!word.trim() || !translation.trim()) && styles.formSaveDisabled,
-              ]}
-              onPress={save}
-              disabled={!word.trim() || !translation.trim()}>
-              <Text style={styles.formSaveText}>Enregistrer</Text>
-            </Pressable>
-          </View>
-        </View>
+        )}
       </View>
-    </Modal>
+
+      <View style={styles.field}>
+        <Text style={styles.fieldLabel}>Traduction</Text>
+        <TextInput
+          style={styles.fieldInput}
+          value={translation}
+          onChangeText={setTranslation}
+          placeholder="ex: cassant, fragile"
+          placeholderTextColor={colors.neutral500}
+        />
+      </View>
+
+      <View style={styles.field}>
+        <Text style={styles.fieldLabel}>Exemple (optionnel)</Text>
+        <TextInput
+          style={styles.fieldInput}
+          value={example}
+          onChangeText={setExample}
+          placeholder="ex: The old paper had grown brittle."
+          placeholderTextColor={colors.neutral500}
+        />
+      </View>
+
+      <View style={styles.formActions}>
+        <Pressable style={styles.formCancel} onPress={onClose}>
+          <Text style={styles.formCancelText}>Annuler</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.formSave, invalid && styles.formSaveDisabled]}
+          onPress={save}
+          disabled={invalid}>
+          <Text style={styles.formSaveText}>Enregistrer</Text>
+        </Pressable>
+      </View>
+    </Sheet>
   );
 }
 

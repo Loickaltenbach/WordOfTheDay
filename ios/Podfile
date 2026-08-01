@@ -30,5 +30,20 @@ target 'WordOfTheDay' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # The `MMKV` pod (widget extension only, see below) references
+    # UIApplication.sharedApplication unless told it's building for an
+    # extension — MMKV_IOS_EXTENSION=1 is the flag its own source expects.
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'MMKV'
+      target.build_configurations.each do |config|
+        defs = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)']
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs + ['MMKV_IOS_EXTENSION=1']
+      end
+    end
   end
+end
+
+target 'WordOfTheDayWidgetExtension' do
+  pod 'MMKV'
 end

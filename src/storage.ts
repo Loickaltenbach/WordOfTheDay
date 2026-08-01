@@ -23,6 +23,10 @@ const SNAPSHOT_KEY = 'snapshot';
 const wordsKey = (language: string) => `words:${language}`;
 const LANGUAGES_KEY = 'languages';
 
+function setWords(language: string, words: WordEntry[]): void {
+  storage.set(wordsKey(language), JSON.stringify(words));
+}
+
 export function getLanguages(): string[] {
   const raw = storage.getString(LANGUAGES_KEY);
   return raw ? JSON.parse(raw) : [];
@@ -35,10 +39,7 @@ function registerLanguage(language: string): void {
 
   const defaults = DEFAULT_WORDS[language];
   if (defaults) {
-    storage.set(
-      wordsKey(language),
-      JSON.stringify(defaults.map(w => ({ ...w, learned: false }))),
-    );
+    setWords(language, defaults.map(w => ({ ...w, learned: false })));
   }
 }
 
@@ -81,10 +82,7 @@ export function addWord(
 ): { ok: true } | { ok: false; reason: 'duplicate' } {
   const words = getWords(language);
   if (isDuplicate(words, entry.word)) return { ok: false, reason: 'duplicate' };
-  storage.set(
-    wordsKey(language),
-    JSON.stringify([...words, { ...entry, learned: false }]),
-  );
+  setWords(language, [...words, { ...entry, learned: false }]);
   writeSnapshot();
   return { ok: true };
 }
@@ -99,14 +97,12 @@ export function updateWord(
   if (changingWord && isDuplicate(words, entry.word)) {
     return { ok: false, reason: 'duplicate' };
   }
-  storage.set(
-    wordsKey(language),
-    JSON.stringify(
-      words.map(w =>
-        w.word.toLowerCase() === originalWord.toLowerCase()
-          ? { ...entry, learned: w.learned }
-          : w,
-      ),
+  setWords(
+    language,
+    words.map(w =>
+      w.word.toLowerCase() === originalWord.toLowerCase()
+        ? { ...entry, learned: w.learned }
+        : w,
     ),
   );
   writeSnapshot();
@@ -114,16 +110,17 @@ export function updateWord(
 }
 
 export function removeWord(language: string, word: string): void {
-  const words = getWords(language).filter(w => w.word !== word);
-  storage.set(wordsKey(language), JSON.stringify(words));
+  setWords(language, getWords(language).filter(w => w.word !== word));
   writeSnapshot();
 }
 
 export function toggleLearned(language: string, word: string): void {
-  const words = getWords(language).map(w =>
-    w.word === word ? { ...w, learned: !w.learned } : w,
+  setWords(
+    language,
+    getWords(language).map(w =>
+      w.word === word ? { ...w, learned: !w.learned } : w,
+    ),
   );
-  storage.set(wordsKey(language), JSON.stringify(words));
 }
 
 function writeSnapshot(): void {

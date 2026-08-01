@@ -1,84 +1,83 @@
-//
-//  WordOfTheDayWidget.swift
-//  WordOfTheDayWidget
-//
-//  Created by Loic Kaltenbach on 01/08/2026.
-//
-
 import WidgetKit
 import SwiftUI
+import MMKV // pod 'MMKV' — added to this target's Podfile entry
+
+private let appGroupID = "group.com.loickaltenbach.wordoftheday"
+private let mmkvID = "word-of-the-day" // must match the `id` used in src/storage.ts
+
+private func loadSnapshot() -> [WordEntry] {
+    guard let groupDir = FileManager.default
+        .containerURL(forSecurityApplicationGroupIdentifier: appGroupID)?.path
+    else { return [] }
+
+    MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .info)
+    guard let kv = MMKV(mmapID: mmkvID, mode: .multiProcess),
+          let json = kv.string(forKey: "snapshot"),
+          let data = json.data(using: .utf8),
+          let entries = try? JSONDecoder().decode([WordEntry].self, from: data)
+    else { return [] }
+    return entries
+}
+
+struct WidgetEntry: TimelineEntry {
+    let date: Date
+    let word: WordEntry?
+}
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    func placeholder(in context: Context) -> WidgetEntry {
+        WidgetEntry(date: Date(), word: WordEntry(word: "mot", translation: "traduction", example: ""))
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
-        completion(entry)
+    func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> Void) {
+        completion(WidgetEntry(date: Date(), word: WordPicker.pick(from: loadSnapshot())))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
-        }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
+        let now = Date()
+        let entry = WidgetEntry(date: now, word: WordPicker.pick(from: loadSnapshot(), for: now))
+        let midnight = Calendar.current.nextDate(
+            after: now,
+            matching: DateComponents(hour: 0, minute: 0),
+            matchingPolicy: .nextTime
+        ) ?? now.addingTimeInterval(86_400)
+        completion(Timeline(entries: [entry], policy: .after(midnight)))
     }
-
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
 }
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let emoji: String
-}
-
-struct WordOfTheDayWidgetEntryView : View {
+// Lock Screen widget: accessoryRectangular gives ~2 lines of room, so the
+// example sentence (shown on the home-screen mock) doesn't fit here — word +
+// translation only. No .containerBackground: that API is for Home Screen /
+// StandBy widgets, accessory families render straight onto the lock screen.
+struct WordOfTheDayWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Emoji:")
-            Text(entry.emoji)
+        if let word = entry.word {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(word.word)
+                    .font(.headline)
+                    .lineLimit(1)
+                Text(word.translation)
+                    .font(.caption2)
+                    .lineLimit(1)
+            }
+        } else {
+            Text("Ajoute des mots dans l'app")
+                .font(.caption2)
         }
     }
 }
 
 struct WordOfTheDayWidget: Widget {
-    let kind: String = "WordOfTheDayWidget"
+    let kind = "WordOfTheDayWidget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            if #available(iOS 17.0, *) {
-                WordOfTheDayWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
-            } else {
-                WordOfTheDayWidgetEntryView(entry: entry)
-                    .padding()
-                    .background()
-            }
+            WordOfTheDayWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Mot du jour")
+        .description("Affiche le mot du jour sur l'écran verrouillé.")
+        .supportedFamilies([.accessoryRectangular])
     }
-}
-
-#Preview(as: .systemSmall) {
-    WordOfTheDayWidget()
-} timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
 }

@@ -3,16 +3,44 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-WordOfTheDay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-WordOfTheDay.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		4F7F9B35128B78A74EA6C341 /* libPods-WordOfTheDayWidgetExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E17315FD74EF8C024EBE86F /* libPods-WordOfTheDayWidgetExtension.a */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9E8EE48B301E517800043B5D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E8EE48A301E517800043B5D /* WidgetKit.framework */; };
+		9E8EE48D301E517800043B5D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E8EE48C301E517800043B5D /* SwiftUI.framework */; };
+		9E8EE49C301E517900043B5D /* WordOfTheDayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9E8EE489301E517800043B5D /* WordOfTheDayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF6FD514F4039B79121A8CCD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9E8EE49A301E517900043B5D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9E8EE488301E517800043B5D;
+			remoteInfo = WordOfTheDayWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9E8EE4A1301E517900043B5D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9E8EE49C301E517900043B5D /* WordOfTheDayWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* WordOfTheDay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordOfTheDay.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,10 +50,42 @@
 		3B4392A12AC88292D35C810B /* Pods-WordOfTheDay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordOfTheDay.debug.xcconfig"; path = "Target Support Files/Pods-WordOfTheDay/Pods-WordOfTheDay.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-WordOfTheDay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordOfTheDay.release.xcconfig"; path = "Target Support Files/Pods-WordOfTheDay/Pods-WordOfTheDay.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-WordOfTheDay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordOfTheDay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E17315FD74EF8C024EBE86F /* libPods-WordOfTheDayWidgetExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordOfTheDayWidgetExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = WordOfTheDay/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = WordOfTheDay/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		896AA88770612058FDBA4271 /* Pods-WordOfTheDayWidgetExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordOfTheDayWidgetExtension.debug.xcconfig"; path = "Target Support Files/Pods-WordOfTheDayWidgetExtension/Pods-WordOfTheDayWidgetExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		97E8FB8F3275E0A03C0E958F /* Pods-WordOfTheDayWidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordOfTheDayWidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-WordOfTheDayWidgetExtension/Pods-WordOfTheDayWidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
+		9E8EE484301E50FA00043B5D /* WordOfTheDay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WordOfTheDay.entitlements; path = WordOfTheDay/WordOfTheDay.entitlements; sourceTree = "<group>"; };
+		9E8EE489301E517800043B5D /* WordOfTheDayWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordOfTheDayWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E8EE48A301E517800043B5D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		9E8EE48C301E517800043B5D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9E8EE49D301E517900043B5D /* Exceptions for "WordOfTheDayWidget" folder in "WordOfTheDayWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9E8EE488301E517800043B5D /* WordOfTheDayWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9E8EE48E301E517800043B5D /* WordOfTheDayWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9E8EE49D301E517900043B5D /* Exceptions for "WordOfTheDayWidget" folder in "WordOfTheDayWidgetExtension" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = WordOfTheDayWidget;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
@@ -36,12 +96,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9E8EE486301E517800043B5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E8EE48D301E517800043B5D /* SwiftUI.framework in Frameworks */,
+				9E8EE48B301E517800043B5D /* WidgetKit.framework in Frameworks */,
+				4F7F9B35128B78A74EA6C341 /* libPods-WordOfTheDayWidgetExtension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		13B07FAE1A68108700A75B9A /* WordOfTheDay */ = {
 			isa = PBXGroup;
 			children = (
+				9E8EE484301E50FA00043B5D /* WordOfTheDay.entitlements */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -56,6 +127,9 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-WordOfTheDay.a */,
+				9E8EE48A301E517800043B5D /* WidgetKit.framework */,
+				9E8EE48C301E517800043B5D /* SwiftUI.framework */,
+				5E17315FD74EF8C024EBE86F /* libPods-WordOfTheDayWidgetExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -72,6 +146,7 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* WordOfTheDay */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				9E8EE48E301E517800043B5D /* WordOfTheDayWidget */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -85,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* WordOfTheDay.app */,
+				9E8EE489301E517800043B5D /* WordOfTheDayWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +170,8 @@
 			children = (
 				3B4392A12AC88292D35C810B /* Pods-WordOfTheDay.debug.xcconfig */,
 				5709B34CF0A7D63546082F79 /* Pods-WordOfTheDay.release.xcconfig */,
+				896AA88770612058FDBA4271 /* Pods-WordOfTheDayWidgetExtension.debug.xcconfig */,
+				97E8FB8F3275E0A03C0E958F /* Pods-WordOfTheDayWidgetExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -112,15 +190,39 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				9E8EE4A1301E517900043B5D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9E8EE49B301E517900043B5D /* PBXTargetDependency */,
 			);
 			name = WordOfTheDay;
 			productName = WordOfTheDay;
 			productReference = 13B07F961A680F5B00A75B9A /* WordOfTheDay.app */;
 			productType = "com.apple.product-type.application";
+		};
+		9E8EE488301E517800043B5D /* WordOfTheDayWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E8EE49E301E517900043B5D /* Build configuration list for PBXNativeTarget "WordOfTheDayWidgetExtension" */;
+			buildPhases = (
+				89467CFCC196CF0A7C7379C1 /* [CP] Check Pods Manifest.lock */,
+				9E8EE485301E517800043B5D /* Sources */,
+				9E8EE486301E517800043B5D /* Frameworks */,
+				9E8EE487301E517800043B5D /* Resources */,
+				50544D5D3148B12EE70F8EB0 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9E8EE48E301E517800043B5D /* WordOfTheDayWidget */,
+			);
+			name = WordOfTheDayWidgetExtension;
+			productName = WordOfTheDayWidgetExtension;
+			productReference = 9E8EE489301E517800043B5D /* WordOfTheDayWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -128,10 +230,14 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					9E8EE488301E517800043B5D = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
@@ -149,6 +255,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* WordOfTheDay */,
+				9E8EE488301E517800043B5D /* WordOfTheDayWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -161,6 +268,13 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BF6FD514F4039B79121A8CCD /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9E8EE487301E517800043B5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +312,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordOfTheDay/Pods-WordOfTheDay-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50544D5D3148B12EE70F8EB0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordOfTheDayWidgetExtension/Pods-WordOfTheDayWidgetExtension-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WordOfTheDayWidgetExtension/Pods-WordOfTheDayWidgetExtension-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordOfTheDayWidgetExtension/Pods-WordOfTheDayWidgetExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		89467CFCC196CF0A7C7379C1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WordOfTheDayWidgetExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
@@ -250,7 +403,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9E8EE485301E517800043B5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9E8EE49B301E517900043B5D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9E8EE488301E517800043B5D /* WordOfTheDayWidgetExtension */;
+			targetProxy = 9E8EE49A301E517900043B5D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
@@ -259,6 +427,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WordOfTheDay/WordOfTheDay.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = WordOfTheDay/Info.plist;
@@ -289,6 +458,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WordOfTheDay/WordOfTheDay.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = WordOfTheDay/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -469,6 +639,97 @@
 			};
 			name = Release;
 		};
+		9E8EE49F301E517900043B5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 896AA88770612058FDBA4271 /* Pods-WordOfTheDayWidgetExtension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WordOfTheDayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WordOfTheDayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.loickaltenbach.wordoftheday.WordOfTheDayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9E8EE4A0301E517900043B5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97E8FB8F3275E0A03C0E958F /* Pods-WordOfTheDayWidgetExtension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WordOfTheDayWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WordOfTheDayWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.loickaltenbach.wordoftheday.WordOfTheDayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -486,6 +747,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9E8EE49E301E517900043B5D /* Build configuration list for PBXNativeTarget "WordOfTheDayWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9E8EE49F301E517900043B5D /* Debug */,
+				9E8EE4A0301E517900043B5D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
