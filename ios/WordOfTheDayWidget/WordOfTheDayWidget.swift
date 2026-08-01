@@ -10,8 +10,17 @@ private func loadSnapshot() -> [WordEntry] {
         .containerURL(forSecurityApplicationGroupIdentifier: appGroupID)?.path
     else { return [] }
 
-    MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: .info)
-    guard let kv = MMKV(mmapID: mmkvID, mode: .multiProcess),
+    // rootPath must be the App Group container itself, NOT `initialize(groupDir:)`
+    // — that variant appends "/mmkv", while react-native-mmkv writes straight to
+    // the container root (its createMMKV sets `path = getAppGroupDirectory()`).
+    MMKV.initialize(rootDir: groupDir, logLevel: .info)
+    guard let kv = MMKV(
+        mmapID: mmkvID,
+        cryptKey: nil,
+        rootPath: groupDir,
+        mode: .multiProcess,
+        expectedCapacity: 0
+    ),
           let json = kv.string(forKey: "snapshot"),
           let data = json.data(using: .utf8),
           let entries = try? JSONDecoder().decode([WordEntry].self, from: data)
